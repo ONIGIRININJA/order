@@ -128,11 +128,34 @@ display:grid;place-items:center;font-size:2rem;margin:0 auto 16px}
 .back{display:inline-block;font-size:.85rem;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:1px}
 .back:hover{color:var(--rose);border-color:var(--rose)}
 .topbar{text-align:center;padding:16px 0 0}
+/* ---------- breadcrumbs ---------- */
+.crumbs{padding:16px 0 0;font-size:.85rem}
+.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:7px;align-items:center;justify-content:center}
+.crumbs li{display:flex;align-items:center;gap:7px;color:var(--muted)}
+.crumbs li+li::before{content:"\2039";color:var(--rule);font-size:1.05rem;line-height:1}
+.crumbs a{color:var(--muted);text-decoration:none;border-bottom:1px solid transparent}
+.crumbs a:hover{color:var(--rose);border-color:var(--rose)}
+.crumbs [aria-current="page"]{color:var(--ink);font-weight:600}
+/* ---------- choice rows: keep the control inline, not full-width ---------- */
+.f label.opt{display:flex;gap:10px;align-items:flex-start;margin-bottom:0;font-weight:400}
+.f .opt input{width:auto;flex:0 0 auto;padding:0;border:0;background:none;border-radius:0;margin:3px 0 0}
+.f .opt>span{flex:1;min-width:0}
+/* ---------- branded station add-on ---------- */
+.opt.addon{border-color:var(--rose);background:#FFF7F4}
+.opt.addon b{color:var(--rose)}
+.f .opt.addon input{accent-color:var(--rose);width:17px;height:17px}
+.opt span.addon-tag{display:inline-block;font-size:.72rem;font-weight:600;color:#FFFDF8;background:var(--rose);border-radius:999px;padding:2px 9px;margin-inline-start:8px;position:relative;top:-1px}
 </style>
 </head>
 <body>
 <div class="wrap" id="app">
-<div class="topbar"><a class="back" href="https://www.onigirininja.com/">‏חזרה לאתר אוניגירי נינג׳ה</a></div>
+<nav class="crumbs" aria-label="מיקום בתוך האתר">
+<ol itemscope itemtype="https://schema.org/BreadcrumbList">
+<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="https://www.onigirininja.com/"><span itemprop="name">אוניגירי נינג׳ה</span></a><meta itemprop="position" content="1"></li>
+<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="https://www.onigirininja.com/category/all-products"><span itemprop="name">התפריט</span></a><meta itemprop="position" content="2"></li>
+<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page"><span itemprop="name">הזמנת אירוע</span><meta itemprop="position" content="3"></li>
+</ol>
+</nav>
 <div class="hd">
 <img src="https://static.wixstatic.com/media/8ecfd9_8b49c8b4b4c04414bccf0ae2e29e8ad4~mv2.png/v1/fill/w_320,h_238,al_c,q_90,enc_auto/8ecfd9_8b49c8b4b4c04414bccf0ae2e29e8ad4~mv2.png" alt="אוניגירי נינג'ה">
 <h1>הזמנת אירוע</h1>
@@ -144,19 +167,20 @@ display:grid;place-items:center;font-size:2rem;margin:0 auto 16px}
 <span class="fact">כשר בהשגחת רבנות אור יהודה</span>
 <span class="fact">ללא גלוטן</span>
 <span class="fact">מיוצר ביום האירוע</span>
-<span class="fact">המחירים כוללים מע״מ</span>
+<span class="fact">אפשר גם עמדה ממותגת באירוע</span>
+<span class="fact">המחירים אינם כוללים מע״מ</span>
 </div>
 <section class="sec">
 <h2><span class="step">1</span>בחירת מילויים</h2>
 <p class="sub">אפשר לשלב בין מילויים כרצונכם — המינימום הוא 100 יחידות בסך הכול.</p>
 <div class="grouphead">
 <h3>מילויי דגים <span style="font-weight:400;color:var(--muted)">· 7 אפשרויות</span></h3>
-<span class="price">18 ₪ ליחידה · כולל מע״מ</span>
+<span class="price">18 ₪ ליחידה + מע״מ</span>
 </div>
 <div class="grid" id="gFish"></div>
 <div class="grouphead">
 <h3>מילויים טבעוניים <span style="font-weight:400;color:var(--muted)">· 4 אפשרויות</span></h3>
-<span class="price">16 ₪ ליחידה · כולל מע״מ</span>
+<span class="price">16 ₪ ליחידה + מע״מ</span>
 </div>
 <div class="grid" id="gVegan"></div>
 </section>
@@ -205,6 +229,9 @@ display:grid;place-items:center;font-size:2rem;margin:0 auto 16px}
 <label class="opt"><input type="radio" name="ship" value="pickup">
 <span><b>איסוף עצמי — ללא עלות</b><span>נחל איילון 5, צור יצחק</span></span></label>
 </div></div>
+<div class="f"><label>תוספת אפשרית</label>
+<label class="opt addon"><input type="checkbox" id="fStation">
+<span><b>עמדת אוניגירי נינג׳ה ממותגת באירוע<span class="addon-tag">בתוספת תשלום</span></b><span>אנחנו מגיעים עם דוכן ממותג וצוות שמגיש במקום. סמנו כאן ונחזור אליכם עם הצעה מותאמת לאירוע.</span></span></label></div>
 <div class="f"><label for="fNotes">הערות</label>
 <textarea id="fNotes" placeholder="אלרגיות, בקשות מיוחדות, פרטי חניה או קומה, שעת פריקה..."></textarea></div>
 </div>
@@ -259,7 +286,7 @@ function cardHTML(it){
 return '<div class="card" data-c="'+it.id+'">'
 + '<img class="th" loading="lazy" src="'+T(it.img)+'" alt="'+it.n+'">'
 + '<div class="nm"><b>'+it.n+(it.tag?'<span class="tag">'+it.tag+'</span>':'')+'</b>'
-+ '<span>'+price(it)+' ₪ ליחידה</span>'
++ '<span>'+price(it)+' ₪ ליחידה + מע״מ</span>'
 + '<div class="stepper" dir="ltr">'
 +   '<button type="button" data-d="'+it.id+'" aria-label="הפחתה">−</button>'
 +   '<input type="number" min="0" step="1" inputmode="numeric" value="0" data-q="'+it.id+'" aria-label="כמות '+it.n+'">'
@@ -301,6 +328,7 @@ qty[f.dataset.q] = Math.max(0, parseInt(f.value,10) || 0);
 update();
 });
 document.getElementById("ship").addEventListener("change", update);
+document.getElementById("fStation").addEventListener("change", update);
 function shipVal(){ return document.querySelector('input[name="ship"]:checked').value; }
 function update(){
 let units = 0, subtotal = 0;
@@ -336,6 +364,7 @@ rows += s === "gush"   ? '<tr><td>משלוח — גוש דן</td><td>'+nis(CONFI
 : s === "pickup" ? '<tr><td>איסוף עצמי — צור יצחק</td><td>0 ₪</td></tr>'
 :                  '<tr><td>משלוח מחוץ לגוש דן</td><td style="font-weight:600;color:var(--warn)">לפי הצעה</td></tr>';
 rows += '<tr><td>מע\u05f4מ '+Math.round(CONFIG.VAT*100)+'%</td><td>'+nis(vat)+'</td></tr>';
+if(document.getElementById("fStation").checked) rows += '<tr><td>עמדה ממותגת באירוע</td><td style="font-weight:600;color:var(--rose)">לפי הצעה</td></tr>';
 rows += '<tr class="tot"><td>'+(s==="other" ? 'סה"כ לפני משלוח' : 'סה"כ לתשלום')+'</td><td>'+nis(grand)+'</td></tr>';
 box.innerHTML = '<table>'+rows+'</table>'
 + '<p class="cap">המחירים ליחידה אינם כוללים מע\u05f4מ. המע\u05f4מ מחושב על המוצרים ועל המשלוח.</p>';
@@ -356,6 +385,7 @@ email:g("fEmail").value.trim(), company:g("fCompany").value.trim()},
 event:{date:g("fDate").value, time:g("fTime").value,
 guests:g("fGuests").value, type:g("fType").value, place:g("fPlace").value.trim()},
 shipping:{code:s, label:SHIP_LABEL[s], cost:s==="gush"?CONFIG.DELIVERY_GUSH:0},
+station:g("fStation").checked,
 notes:g("fNotes").value.trim(),
 lines, units, subtotal,
 vatRate: CONFIG.VAT,
@@ -394,9 +424,10 @@ L.push("*תאריך:* " + o.event.date + "  *שעה:* " + o.event.time);
 L.push("*משתתפים:* " + o.event.guests + (o.event.type ? "   *סוג:* " + o.event.type : ""));
 L.push("*מקום:* " + o.event.place);
 L.push("*אספקה:* " + o.shipping.label);
+if(o.station) L.push("*עמדה ממותגת באירוע:* כן — בתוספת תשלום, לפי הצעה");
 L.push("", "*ההזמנה:*");
 o.lines.forEach(l => L.push("• " + l.name + " × " + l.qty + " = " + l.sum + " ₪"));
-L.push("", "סה\"כ " + o.units + " יחידות — " + o.subtotal + " ₪ (כולל מע\u05f4מ)");
+L.push("", "סה\"כ " + o.units + " יחידות — " + o.subtotal + " ₪ (לפני מע\u05f4מ)");
 if(o.shipping.cost) L.push("משלוח — " + o.shipping.cost + " ₪");
 L.push("*סה\"כ לתשלום: " + o.total + " ₪*" + (o.shipping.code === "other" ? " (לפני משלוח)" : ""));
 if(o.notes) L.push("", "*הערות:* " + o.notes);
