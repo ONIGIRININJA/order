@@ -92,6 +92,7 @@ padding:16px 18px;box-shadow:var(--shadow)}
 .sum td:last-child{text-align:left;font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
 .sum .ln td{border-top:1px solid var(--rule);padding-top:9px}
 .sum .tot td{border-top:2px solid var(--olive);padding-top:10px;font-size:1.06rem;font-weight:800;color:var(--olive)}
+.sum .vatin td{color:var(--muted);font-weight:400;font-size:.84rem;padding-top:2px}
 .sum .empty{color:var(--muted);font-size:.9rem;margin:0}
 /* ---------- sticky bar ---------- */
 .bar{position:fixed;inset-inline:0;bottom:0;background:var(--surface);
@@ -168,19 +169,19 @@ display:grid;place-items:center;font-size:2rem;margin:0 auto 16px}
 <span class="fact">ללא גלוטן</span>
 <span class="fact">מיוצר ביום האירוע</span>
 <span class="fact">אפשר גם עמדה ממותגת באירוע</span>
-<span class="fact">המחירים אינם כוללים מע״מ</span>
+<span class="fact">כל המחירים כוללים מע״מ</span>
 </div>
 <section class="sec">
 <h2><span class="step">1</span>בחירת מילויים</h2>
 <p class="sub">אפשר לשלב בין מילויים כרצונכם — המינימום הוא 100 יחידות בסך הכול.</p>
 <div class="grouphead">
 <h3>מילויי דגים <span style="font-weight:400;color:var(--muted)">· 7 אפשרויות</span></h3>
-<span class="price">18 ₪ ליחידה + מע״מ</span>
+<span class="price">18 ₪ ליחידה · כולל מע״מ</span>
 </div>
 <div class="grid" id="gFish"></div>
 <div class="grouphead">
 <h3>מילויים טבעוניים <span style="font-weight:400;color:var(--muted)">· 4 אפשרויות</span></h3>
-<span class="price">16 ₪ ליחידה + מע״מ</span>
+<span class="price">16 ₪ ליחידה · כולל מע״מ</span>
 </div>
 <div class="grid" id="gVegan"></div>
 </section>
@@ -286,7 +287,7 @@ function cardHTML(it){
 return '<div class="card" data-c="'+it.id+'">'
 + '<img class="th" loading="lazy" src="'+T(it.img)+'" alt="'+it.n+'">'
 + '<div class="nm"><b>'+it.n+(it.tag?'<span class="tag">'+it.tag+'</span>':'')+'</b>'
-+ '<span>'+price(it)+' ₪ ליחידה + מע״מ</span>'
++ '<span>'+price(it)+' ₪ ליחידה · כולל מע״מ</span>'
 + '<div class="stepper" dir="ltr">'
 +   '<button type="button" data-d="'+it.id+'" aria-label="הפחתה">−</button>'
 +   '<input type="number" min="0" step="1" inputmode="numeric" value="0" data-q="'+it.id+'" aria-label="כמות '+it.n+'">'
@@ -346,8 +347,8 @@ const missing = Math.max(0, CONFIG.MIN_UNITS - units);
 const ok = units >= CONFIG.MIN_UNITS;
 document.getElementById("mText").textContent =
 units + " יחידות" + (ok ? " · עברתם את המינימום" : " · נדרשות עוד " + missing);
-const vat   = Math.round((subtotal + delivery) * CONFIG.VAT);
-const grand = subtotal + delivery + vat;
+const grand = subtotal + delivery;
+const vat   = Math.round(grand - grand / (1 + CONFIG.VAT));
 document.getElementById("mTotal").innerHTML =
 nis(grand) + (units ? ' <small>כולל מע\u05f4מ</small>' : '');
 const fill = document.getElementById("mFill");
@@ -363,11 +364,11 @@ rows += '<tr class="ln"><td>סה"כ '+units+' יחידות</td><td>'+nis(subtota
 rows += s === "gush"   ? '<tr><td>משלוח — גוש דן</td><td>'+nis(CONFIG.DELIVERY_GUSH)+'</td></tr>'
 : s === "pickup" ? '<tr><td>איסוף עצמי — צור יצחק</td><td>0 ₪</td></tr>'
 :                  '<tr><td>משלוח מחוץ לגוש דן</td><td style="font-weight:600;color:var(--warn)">לפי הצעה</td></tr>';
-rows += '<tr><td>מע\u05f4מ '+Math.round(CONFIG.VAT*100)+'%</td><td>'+nis(vat)+'</td></tr>';
 if(document.getElementById("fStation").checked) rows += '<tr><td>עמדה ממותגת באירוע</td><td style="font-weight:600;color:var(--rose)">לפי הצעה</td></tr>';
 rows += '<tr class="tot"><td>'+(s==="other" ? 'סה"כ לפני משלוח' : 'סה"כ לתשלום')+'</td><td>'+nis(grand)+'</td></tr>';
+rows += '<tr class="vatin"><td>מזה מע\u05f4מ '+Math.round(CONFIG.VAT*100)+'%</td><td>'+nis(vat)+'</td></tr>';
 box.innerHTML = '<table>'+rows+'</table>'
-+ '<p class="cap">המחירים ליחידה אינם כוללים מע\u05f4מ. המע\u05f4מ מחושב על המוצרים ועל המשלוח.</p>';
++ '<p class="cap">כל המחירים כוללים מע\u05f4מ.</p>';
 }
 /* ---- submit ---- */
 const SHIP_LABEL = {gush:"משלוח בגוש דן (50 ₪)", other:"משלוח מחוץ לגוש דן — לפי הצעה", pickup:"איסוף עצמי — צור יצחק"};
@@ -389,8 +390,9 @@ station:g("fStation").checked,
 notes:g("fNotes").value.trim(),
 lines, units, subtotal,
 vatRate: CONFIG.VAT,
-vat: Math.round((subtotal + (s==="gush"?CONFIG.DELIVERY_GUSH:0)) * CONFIG.VAT),
-get total(){ return this.subtotal + this.shipping.cost + this.vat; }
+vat: Math.round((subtotal + (s==="gush"?CONFIG.DELIVERY_GUSH:0)) - (subtotal + (s==="gush"?CONFIG.DELIVERY_GUSH:0)) / (1 + CONFIG.VAT)),
+vatIncluded: true,
+get total(){ return this.subtotal + this.shipping.cost; }
 };
 }
 function validate(){
@@ -427,9 +429,10 @@ L.push("*אספקה:* " + o.shipping.label);
 if(o.station) L.push("*עמדה ממותגת באירוע:* כן — בתוספת תשלום, לפי הצעה");
 L.push("", "*ההזמנה:*");
 o.lines.forEach(l => L.push("• " + l.name + " × " + l.qty + " = " + l.sum + " ₪"));
-L.push("", "סה\"כ " + o.units + " יחידות — " + o.subtotal + " ₪ (לפני מע\u05f4מ)");
+L.push("", "סה\"כ " + o.units + " יחידות — " + o.subtotal + " ₪");
 if(o.shipping.cost) L.push("משלוח — " + o.shipping.cost + " ₪");
 L.push("*סה\"כ לתשלום: " + o.total + " ₪*" + (o.shipping.code === "other" ? " (לפני משלוח)" : ""));
+L.push("מזה מע\u05f4מ " + Math.round(CONFIG.VAT*100) + "% — " + o.vat + " ₪");
 if(o.notes) L.push("", "*הערות:* " + o.notes);
 return L.join("\n");
 }
