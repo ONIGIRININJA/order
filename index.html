@@ -144,19 +144,19 @@ display:grid;place-items:center;font-size:2rem;margin:0 auto 16px}
 <span class="fact">כשר בהשגחת רבנות אור יהודה</span>
 <span class="fact">ללא גלוטן</span>
 <span class="fact">מיוצר ביום האירוע</span>
-<span class="fact">המחירים אינם כוללים מע״מ</span>
+<span class="fact">המחירים כוללים מע״מ</span>
 </div>
 <section class="sec">
 <h2><span class="step">1</span>בחירת מילויים</h2>
 <p class="sub">אפשר לשלב בין מילויים כרצונכם — המינימום הוא 100 יחידות בסך הכול.</p>
 <div class="grouphead">
 <h3>מילויי דגים <span style="font-weight:400;color:var(--muted)">· 7 אפשרויות</span></h3>
-<span class="price">18 ₪ ליחידה + מע״מ</span>
+<span class="price">18 ₪ ליחידה · כולל מע״מ</span>
 </div>
 <div class="grid" id="gFish"></div>
 <div class="grouphead">
 <h3>מילויים טבעוניים <span style="font-weight:400;color:var(--muted)">· 4 אפשרויות</span></h3>
-<span class="price">16 ₪ ליחידה + מע״מ</span>
+<span class="price">16 ₪ ליחידה · כולל מע״מ</span>
 </div>
 <div class="grid" id="gVegan"></div>
 </section>
@@ -234,7 +234,7 @@ PRICE_FISH: 18,
 PRICE_VEGAN: 16,
 MIN_UNITS: 100,
 DELIVERY_GUSH: 50,
-VAT: 0.18                        // שיעור המע״מ
+VAT: 0                        // שיעור המע״מ
 };
 const M = "https://static.wixstatic.com/media/";
 const T = id => M + id + "/v1/fill/w_180,h_180,al_c,q_85,enc_auto/" + id;
@@ -259,7 +259,7 @@ function cardHTML(it){
 return '<div class="card" data-c="'+it.id+'">'
 + '<img class="th" loading="lazy" src="'+T(it.img)+'" alt="'+it.n+'">'
 + '<div class="nm"><b>'+it.n+(it.tag?'<span class="tag">'+it.tag+'</span>':'')+'</b>'
-+ '<span>'+price(it)+' ₪ + מע״מ</span>'
++ '<span>'+price(it)+' ₪ ליחידה</span>'
 + '<div class="stepper" dir="ltr">'
 +   '<button type="button" data-d="'+it.id+'" aria-label="הפחתה">−</button>'
 +   '<input type="number" min="0" step="1" inputmode="numeric" value="0" data-q="'+it.id+'" aria-label="כמות '+it.n+'">'
@@ -396,9 +396,8 @@ L.push("*מקום:* " + o.event.place);
 L.push("*אספקה:* " + o.shipping.label);
 L.push("", "*ההזמנה:*");
 o.lines.forEach(l => L.push("• " + l.name + " × " + l.qty + " = " + l.sum + " ₪"));
-L.push("", "סה\"כ " + o.units + " יחידות — " + o.subtotal + " ₪ (לפני מע\u05f4מ)");
+L.push("", "סה\"כ " + o.units + " יחידות — " + o.subtotal + " ₪ (כולל מע\u05f4מ)");
 if(o.shipping.cost) L.push("משלוח — " + o.shipping.cost + " ₪");
-L.push("מע\u05f4מ " + Math.round(o.vatRate*100) + "% — " + o.vat + " ₪");
 L.push("*סה\"כ לתשלום: " + o.total + " ₪*" + (o.shipping.code === "other" ? " (לפני משלוח)" : ""));
 if(o.notes) L.push("", "*הערות:* " + o.notes);
 return L.join("\n");
