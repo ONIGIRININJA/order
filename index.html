@@ -287,7 +287,7 @@ function cardHTML(it){
 return '<div class="card" data-c="'+it.id+'">'
 + '<img class="th" loading="lazy" src="'+T(it.img)+'" alt="'+it.n+'">'
 + '<div class="nm"><b>'+it.n+(it.tag?'<span class="tag">'+it.tag+'</span>':'')+'</b>'
-+ '<span>'+price(it)+' ₪ ליחידה · כולל מע״מ</span>'
++ '<span>'+price(it)+' ₪ · כולל מע״מ</span>'
 + '<div class="stepper" dir="ltr">'
 +   '<button type="button" data-d="'+it.id+'" aria-label="הפחתה">−</button>'
 +   '<input type="number" min="0" step="1" inputmode="numeric" value="0" data-q="'+it.id+'" aria-label="כמות '+it.n+'">'
