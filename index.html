@@ -466,7 +466,40 @@ document.getElementById("app").innerHTML =
 + '<p style="margin-top:18px">צריכים אותנו קודם? <a href="tel:0525958465" style="color:var(--rose);font-weight:600">052-5958465</a></p></div>';
 window.scrollTo({top:0, behavior:"smooth"});
 }
+
+/* ---- מדידת משפך (ביקור / התחלת מילוי / הגעה למינימום / שליחה) ---- */
+var __onnS = {start:false, cart:false};
+document.addEventListener("input", function(){ if(!__onnS.start && window.__onnTrack){ __onnS.start = true; __onnTrack("start"); } }, true);
+document.addEventListener("click", function(e){ if(!__onnS.start && window.__onnTrack && e.target.closest && e.target.closest("[data-i]")){ __onnS.start = true; __onnTrack("start"); } }, true);
+var __onnUpdate = update;
+update = function(){ __onnUpdate(); var b = document.getElementById("send"); if(!__onnS.cart && b && !b.disabled && window.__onnTrack){ __onnS.cart = true; __onnTrack("cart"); } };
+var __onnDone = done;
+done = function(o){ if(window.__onnTrack) __onnTrack("submit"); __onnDone(o); };
 update();
+</script>
+<script>
+/* אוניגירי נינג׳ה — מונה ביקורים ומשפך הזמנה. ללא עוגיות, ללא פרטים מזהים: מזהה גלישה אקראי לטאב (sessionStorage), נתיב ומקור בלבד. */
+(function(){
+  var SB='https://iwlojjcicfowiwpigddf.supabase.co/rest/v1/rpc/onigiri_web_event';
+  var K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3bG9qamNpY2Zvd2l3cGlnZGRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MDM4MjUsImV4cCI6MjA5NjE3OTgyNX0.UhZw0mdNcduMUydBcUf-2vzMFaw6Qe7leX9zFb2nkx8';
+  var SITE='order';
+  function sid(){ try{ var s=sessionStorage.getItem('onn_sid'); if(!s){ s=''; var a='ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789'; for(var i=0;i<20;i++) s+=a[Math.floor(Math.random()*a.length)]; sessionStorage.setItem('onn_sid',s);} return s; }catch(e){ return ''; } }
+  function send(ev){ var s=sid(); if(!s) return; var ref=''; try{ ref=document.referrer?new URL(document.referrer).hostname:''; }catch(e){}
+    if(ref && location.hostname && ref.indexOf(location.hostname.replace(/^www\./,''))!==-1) ref='';
+    var body=JSON.stringify({_p:{sid:s,site:SITE,event:ev,path:location.pathname.slice(0,200),ref:ref.slice(0,200)}});
+    try{ fetch(SB,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json','apikey':K,'Authorization':'Bearer '+K},body:body}).catch(function(){}); }catch(e){}
+  }
+  window.__onnTrack=send;
+  function go(){ send('view'); }
+  // באתר הראשי: לכבד את הסכמת העוגיות (Usercentrics) — נשלח רק אם אושרו סטטיסטיקות, או אם אין באנר בכלל
+  if(SITE==='main'){
+    function allowed(){ try{ if(!window.UC_UI) return true; if(window.UC_UI.areAllConsentsAccepted&&window.UC_UI.areAllConsentsAccepted()) return true; var L=window.UC_UI.getServicesBaseInfo?window.UC_UI.getServicesBaseInfo():[]; for(var i=0;i<L.length;i++){ var c=String((L[i].categorySlug||'')).toLowerCase(); if((c.indexOf('analytic')!==-1||c.indexOf('statist')!==-1)&&L[i].consent&&L[i].consent.status) return true; } return false; }catch(e){ return false; } }
+    var done=false; function tryGo(){ if(done) return; if(allowed()){ done=true; go(); } }
+    if(window.UC_UI&&window.UC_UI.isInitialized&&window.UC_UI.isInitialized()) tryGo();
+    window.addEventListener('UC_UI_INITIALIZED',tryGo); window.addEventListener('UC_UI_CMP_EVENT',tryGo);
+    setTimeout(function(){ if(!window.UC_UI) tryGo(); },3000);
+  } else { go(); }
+})();
 </script>
 </body>
 </html>
