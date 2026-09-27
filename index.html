@@ -6,17 +6,17 @@
 <title>הזמנת אירוע — אוניגירי נינג'ה</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&display=swap">
 <style>
 :root{
---cream:#F7F1DF; --surface:#FFFDF8; --ink:#2C2823; --rose:#97625D;
---olive:#3E4A38; --muted:#7B7268; --rule:#E6DCC3; --good:#3F6B4E; --warn:#B4552F;
+--cream:#FAF7EF; --surface:#FFFDF8; --ink:#26372D; --rose:#BC3239;
+--olive:#26372D; --muted:#53604F; --rule:#E5E0D3; --good:#3F6B4E; --warn:#BC3239;
 --shadow:0 1px 2px rgba(44,40,35,.05), 0 6px 18px rgba(44,40,35,.06);
 --r:14px;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--cream);color:var(--ink);
-font-family:'Heebo',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+font-family:'Assistant',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
 font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%}
 img{max-width:100%;display:block}
 .wrap{max-width:940px;margin:0 auto;padding:0 16px 180px}
@@ -146,7 +146,7 @@ display:grid;place-items:center;font-size:2rem;margin:0 auto 16px}
 .opt.addon b{color:var(--rose)}
 .f .opt.addon input{accent-color:var(--rose);width:17px;height:17px}
 .opt span.addon-tag{display:inline-block;font-size:.72rem;font-weight:600;color:#FFFDF8;background:var(--rose);border-radius:999px;padding:2px 9px;margin-inline-start:8px;position:relative;top:-1px}
-</style>
+h1,h2,h3{font-family:'Rubik',Arial,sans-serif;font-weight:700!important}.hd h1,.sec>h2{color:var(--ink)}.hd h1:before{content:'';display:block;width:40px;height:40px;margin:18px auto;border-radius:50%;background:var(--rose)}.stepper button,.stepper input{height:44px}.stepper button{width:44px}.cta{background:var(--rose)}.cta:hover{background:#992930}a:focus-visible,button:focus-visible{outline:3px solid var(--rose);outline-offset:3px}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}</style>
 </head>
 <body>
 <div class="wrap" id="app">
@@ -326,6 +326,7 @@ document.addEventListener("input", e => {
 const f = e.target.closest("[data-q]");
 if(!f) return;
 qty[f.dataset.q] = Math.max(0, parseInt(f.value,10) || 0);
+f.value = qty[f.dataset.q];
 update();
 });
 document.getElementById("ship").addEventListener("change", update);
@@ -395,21 +396,38 @@ vatIncluded: true,
 get total(){ return this.subtotal + this.shipping.cost; }
 };
 }
+function earliestEventDate(){
+const today = new Intl.DateTimeFormat('sv-SE', {timeZone:'Asia/Jerusalem',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+const day = new Date(today + 'T12:00:00Z');
+day.setUTCDate(day.getUTCDate() + 2);
+return day.toISOString().slice(0,10);
+}
+document.getElementById('fDate').min = earliestEventDate();
 function validate(){
 const need = [["fName","שם איש קשר"],["fPhone","טלפון"],["fEmail","אימייל"],
 ["fDate","תאריך האירוע"],["fTime","שעת האספקה"],
 ["fGuests","מספר משתתפים"],["fPlace","מקום האירוע"]];
-const miss = [];
+const errors = [];
+let firstInvalid = null;
+const minDate = earliestEventDate();
+document.getElementById('fDate').min = minDate;
 need.forEach(([id,label]) => {
-const el = document.getElementById(id), empty = !el.value.trim();
-el.setAttribute("aria-invalid", empty ? "true" : "false");
-if(empty) miss.push(label);
+const el = document.getElementById(id), value = el.value.trim();
+let error = !value ? 'יש למלא ' + label : '';
+if(!error && !el.validity.valid) error = 'יש להזין ' + label + ' תקין';
+if(!error && id === 'fPhone' && !/^\+?[0-9 ()-]{9,22}$/.test(value)) error = 'יש להזין מספר טלפון תקין';
+if(!error && id === 'fPhone' && (value.replace(/\D/g,'').length < 9 || value.replace(/\D/g,'').length > 15)) error = 'יש להזין מספר טלפון תקין';
+if(!error && id === 'fDate' && value < minDate) error = 'יש לבחור תאריך בעוד יומיים לפחות';
+if(!error && id === 'fGuests' && (!Number.isInteger(Number(value)) || Number(value) < 1)) error = 'מספר המשתתפים חייב להיות מספר שלם וחיובי';
+el.setAttribute('aria-invalid', error ? 'true' : 'false');
+if(error){ errors.push(error); if(!firstInvalid) firstInvalid = el; }
 });
-const box = document.getElementById("formErr");
-if(miss.length){
-box.textContent = "חסרים פרטים: " + miss.join(", ");
+if(Object.values(qty).reduce((sum,q)=>sum+q,0) < CONFIG.MIN_UNITS) errors.push('מינימום ההזמנה הוא ' + CONFIG.MIN_UNITS + ' יחידות');
+const box = document.getElementById('formErr');
+if(errors.length){
+box.textContent = errors.join('. ');
 box.hidden = false;
-box.scrollIntoView({behavior:"smooth", block:"center"});
+if(firstInvalid) firstInvalid.focus();
 return false;
 }
 box.hidden = true;
@@ -418,7 +436,7 @@ return true;
 function waText(o){
 const L = [];
 L.push("*בקשת הזמנה — אוניגירי נינג׳ה*","");
-L.push("*לקוח:* " + o.contact.name + (o.contact.company ? " (" + o.contact.company + ")" : ""));
+L.push("*לקוח:* " + escapeHTML(o.contact.name) + (o.contact.company ? " (" + o.contact.company + ")" : ""));
 L.push("*טלפון:* " + o.contact.phone);
 L.push("*אימייל:* " + o.contact.email);
 L.push("");
@@ -443,10 +461,16 @@ const order = collect();
 btn.disabled = true; btn.textContent = "שולח...";
 try{
 if(CONFIG.WEBHOOK_URL){
-await fetch(CONFIG.WEBHOOK_URL, {method:"POST", headers:{"Content-Type":"application/json"},
+const response = await fetch(CONFIG.WEBHOOK_URL, {method:"POST", headers:{"Content-Type":"application/json"},
 body:JSON.stringify(order)});
+if(!response.ok) throw new Error("Order request failed");
 }else{
 window.open("https://wa.me/" + CONFIG.WHATSAPP_NUMBER + "?text=" + encodeURIComponent(waText(order)), "_blank");
+btn.disabled = false; btn.textContent = "פתיחת הבקשה בוואטסאפ";
+const notice = document.getElementById('formErr');
+notice.textContent = 'יש להשלים את שליחת ההודעה בוואטסאפ. הבקשה עדיין לא אושרה כמתקבלת.';
+notice.hidden = false;
+return;
 }
 done(order);
 }catch(err){
@@ -456,12 +480,13 @@ box.textContent = "השליחה נכשלה. אפשר להתקשר אלינו: 05
 box.hidden = false;
 }
 });
+function escapeHTML(value){return String(value).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function done(o){
 document.getElementById("bar").remove();
 document.getElementById("app").innerHTML =
 '<div class="done"><div class="tick">✓</div>'
 + '<h2>הבקשה נשלחה</h2>'
-+ '<p>תודה ' + o.contact.name + '. קיבלנו בקשה ל-' + o.units + ' יחידות לתאריך ' + o.event.date + '.</p>'
++ '<p>תודה ' + escapeHTML(o.contact.name) + '. קיבלנו בקשה ל-' + o.units + ' יחידות לתאריך ' + o.event.date + '.</p>'
 + '<p>נחזור אליכם לאישור הפרטים והסכום הסופי — בדרך כלל תוך שעות ספורות.</p>'
 + '<p style="margin-top:18px">צריכים אותנו קודם? <a href="tel:0525958465" style="color:var(--rose);font-weight:600">052-5958465</a></p></div>';
 window.scrollTo({top:0, behavior:"smooth"});
