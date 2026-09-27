@@ -40,7 +40,7 @@ margin:22px 0 10px;padding-bottom:7px;border-bottom:1px solid var(--rule)}
 .grouphead h3{margin:0;font-size:1.02rem;font-weight:700}
 .grouphead .price{font-size:.9rem;font-weight:700;color:var(--olive);
 font-variant-numeric:tabular-nums;white-space:nowrap}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
 .card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r);
 padding:11px;display:flex;gap:11px;align-items:center;box-shadow:var(--shadow);
 transition:border-color .15s,box-shadow .15s}
@@ -436,7 +436,7 @@ return true;
 function waText(o){
 const L = [];
 L.push("*בקשת הזמנה — אוניגירי נינג׳ה*","");
-L.push("*לקוח:* " + escapeHTML(o.contact.name) + (o.contact.company ? " (" + o.contact.company + ")" : ""));
+L.push("*לקוח:* " + o.contact.name + (o.contact.company ? " (" + o.contact.company + ")" : ""));
 L.push("*טלפון:* " + o.contact.phone);
 L.push("*אימייל:* " + o.contact.email);
 L.push("");
