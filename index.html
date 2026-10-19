@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>הזמנת אירוע — אוניגירי נינג'ה</title>
+<meta name="description" content="הזמנת אוניגירי לאירועים: בוחרים מילויים וכמות, רואים את המחיר ושולחים בקשה. מינימום 100 יחידות. אישור ההזמנה והתשלום מתבצעים לאחר בדיקת הפרטים.">
+<link rel="canonical" href="https://order.onigirininja.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&display=swap">
@@ -99,9 +101,9 @@ padding:16px 18px;box-shadow:var(--shadow)}
 border-top:1px solid var(--rule);box-shadow:0 -4px 20px rgba(44,40,35,.10);z-index:40}
 .bar .in{max-width:940px;margin:0 auto;padding:11px 16px;display:flex;align-items:center;gap:14px}
 .meter{flex:1;min-width:0}
-.meter .t{display:flex;justify-content:space-between;gap:10px;font-size:.85rem;margin-bottom:5px}
+.meter .t{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;font-size:.85rem;margin-bottom:5px}
 .meter .t b{font-variant-numeric:tabular-nums;white-space:nowrap}
-.meter .t b small{font-weight:500;font-size:.72rem;color:var(--muted);margin-inline-start:4px}
+.meter .t b small{display:block;white-space:normal;font-weight:500;font-size:.72rem;color:var(--muted)}
 .sum .cap{margin:10px 0 0;font-size:.79rem;color:var(--muted)}
 .track{height:7px;background:#EDE3C9;border-radius:99px;overflow:hidden}
 .fill{height:100%;width:0;background:var(--warn);border-radius:99px;transition:width .25s,background .25s}
@@ -160,13 +162,13 @@ h1,h2,h3{font-family:'Rubik',Arial,sans-serif;font-weight:700!important}.hd h1,.
 <div class="hd">
 <img src="https://static.wixstatic.com/media/8ecfd9_8b49c8b4b4c04414bccf0ae2e29e8ad4~mv2.png/v1/fill/w_320,h_238,al_c,q_90,enc_auto/8ecfd9_8b49c8b4b4c04414bccf0ae2e29e8ad4~mv2.png" alt="אוניגירי נינג'ה">
 <h1>הזמנת אירוע</h1>
-<p>בוחרים מילויים, ממלאים את פרטי האירוע — ואנחנו חוזרים אליכם לאישור הפרטים והסכום הסופי.</p>
+<p>בוחרים מילויים, רואים את המחיר ושולחים בקשת הזמנה לאירוע. אנחנו בודקים את הפרטים, מאשרים את ההזמנה ומתאמים את התשלום.</p>
 </div>
 <div class="facts">
 <span class="fact">מינימום 100 יחידות</span>
 <span class="fact">יומיים מראש</span>
 <span class="fact">כשר בהשגחת רבנות אור יהודה</span>
-<span class="fact">ללא גלוטן</span>
+<span class="fact">האוניגירי ללא גלוטן · ראו מידע על הרטבים</span>
 <span class="fact">מיוצר ביום האירוע</span>
 <span class="fact">אפשר גם עמדה ממותגת באירוע</span>
 <span class="fact">כל המחירים כוללים מע״מ</span>
@@ -174,6 +176,7 @@ h1,h2,h3{font-family:'Rubik',Arial,sans-serif;font-weight:700!important}.hd h1,.
 <section class="sec">
 <h2><span class="step">1</span>בחירת מילויים</h2>
 <p class="sub">אפשר לשלב בין מילויים כרצונכם — המינימום הוא 100 יחידות בסך הכול.</p>
+<p class="note" id="sauceInfo">האוניגירי עצמו ללא גלוטן. רוטבי הסויה והטריאקי מגיעים בנפרד ועשויים להכיל גלוטן. אפשר לבחור בהמשך הזמנה ללא רטבים. במקרה של אלרגיה או רגישות, ציינו זאת בהערות וצרו איתנו קשר לפני אישור ההזמנה.</p>
 <div class="grouphead">
 <h3>מילויי דגים <span style="font-weight:400;color:var(--muted)">· 7 אפשרויות</span></h3>
 <span class="price">18 ₪ ליחידה · כולל מע״מ</span>
@@ -187,7 +190,7 @@ h1,h2,h3{font-family:'Rubik',Arial,sans-serif;font-weight:700!important}.hd h1,.
 </section>
 <section class="sec">
 <h2><span class="step">2</span>פרטי האירוע</h2>
-<p class="sub">כל מה שצריך כדי לתמחר ולתאם. שדות עם <span class="req">*</span> הם חובה.</p>
+<p class="sub">כל מה שצריך כדי לאשר ולתאם את האירוע. שדות עם <span class="req">*</span> הם חובה.</p>
 <div class="form">
 <div id="formErr" hidden class="err"></div>
 <div class="row">
@@ -233,6 +236,8 @@ h1,h2,h3{font-family:'Rubik',Arial,sans-serif;font-weight:700!important}.hd h1,.
 <div class="f"><label>תוספת אפשרית</label>
 <label class="opt addon"><input type="checkbox" id="fStation">
 <span><b>עמדת אוניגירי נינג׳ה ממותגת באירוע<span class="addon-tag">בתוספת תשלום</span></b><span>אנחנו מגיעים עם דוכן ממותג וצוות שמגיש במקום. סמנו כאן ונחזור אליכם עם הצעה מותאמת לאירוע.</span></span></label></div>
+<div class="f"><label class="opt"><input type="checkbox" id="fNoSauces" aria-describedby="sauceInfo">
+<span><b>להזמין ללא רטבים</b><span>ללא רוטב סויה וללא רוטב טריאקי.</span></span></label></div>
 <div class="f"><label for="fNotes">הערות</label>
 <textarea id="fNotes" placeholder="אלרגיות, בקשות מיוחדות, פרטי חניה או קומה, שעת פריקה..."></textarea></div>
 </div>
@@ -240,7 +245,8 @@ h1,h2,h3{font-family:'Rubik',Arial,sans-serif;font-weight:700!important}.hd h1,.
 <section class="sec">
 <h2><span class="step">3</span>סיכום ההזמנה</h2>
 <div class="sum" id="sum"><p class="empty">עדיין לא נבחרו מילויים.</p></div>
-<p class="note">זו בקשת הזמנה, לא חיוב. נחזור אליכם לאישור הפרטים והסכום הסופי לפני כל תשלום.</p>
+<p class="note">המחיר מוצג בסיכום. שליחת הבקשה אינה מחייבת בתשלום ואינה אישור הזמנה. לאחר בדיקת הפרטים נאשר את ההזמנה ונתאם את התשלום. עמדה ממותגת ומשלוח מחוץ לגוש דן, אם נבחרו, מתומחרים בנפרד לפני האישור.</p>
+<p class="contact">הפרטים נמסרים לצורך טיפול בבקשת ההזמנה. לעיון: <a href="https://www.onigirininja.com/מדיניות-פרטיות" target="_blank" rel="noopener">מדיניות פרטיות</a> · <a href="https://www.onigirininja.com/תקנון-האתר" target="_blank" rel="noopener">תקנון האתר</a>.</p>
 <p class="contact">שאלה לפני שממלאים? <a href="tel:0525958465">052-5958465</a> · <a href="mailto:Bigbeilin@gmail.com">Bigbeilin@gmail.com</a><br><a href="https://www.onigirininja.com/">onigirininja.com</a></p>
 </section>
 </div>
@@ -289,9 +295,9 @@ return '<div class="card" data-c="'+it.id+'">'
 + '<div class="nm"><b>'+it.n+(it.tag?'<span class="tag">'+it.tag+'</span>':'')+'</b>'
 + '<span>'+price(it)+' ₪ · כולל מע״מ</span>'
 + '<div class="stepper" dir="ltr">'
-+   '<button type="button" data-d="'+it.id+'" aria-label="הפחתה">−</button>'
++   '<button type="button" data-d="'+it.id+'" aria-label="הפחתת 5 יחידות '+it.n+'">−</button>'
 +   '<input type="number" min="0" step="1" inputmode="numeric" value="0" data-q="'+it.id+'" aria-label="כמות '+it.n+'">'
-+   '<button type="button" data-i="'+it.id+'" aria-label="הוספה">+</button>'
++   '<button type="button" data-i="'+it.id+'" aria-label="הוספת 5 יחידות '+it.n+'">+</button>'
 + '</div></div></div>';
 }
 document.getElementById("gFish").innerHTML  = ITEMS.filter(i=>i.k==="fish").map(cardHTML).join("");
@@ -331,7 +337,11 @@ update();
 });
 document.getElementById("ship").addEventListener("change", update);
 document.getElementById("fStation").addEventListener("change", update);
+document.getElementById("fNoSauces").addEventListener("change", update);
 function shipVal(){ return document.querySelector('input[name="ship"]:checked').value; }
+function excludedExtras(shipping, station){
+return [shipping === "other" ? "משלוח מחוץ לגוש דן" : "", station ? "עמדה ממותגת" : ""].filter(Boolean).join(" ו");
+}
 function update(){
 let units = 0, subtotal = 0;
 ITEMS.forEach(it => {
@@ -349,9 +359,10 @@ const ok = units >= CONFIG.MIN_UNITS;
 document.getElementById("mText").textContent =
 units + " יחידות" + (ok ? " · עברתם את המינימום" : " · נדרשות עוד " + missing);
 const grand = subtotal + delivery;
+const extras = excludedExtras(s, document.getElementById("fStation").checked);
 const vat   = Math.round(grand - grand / (1 + CONFIG.VAT));
 document.getElementById("mTotal").innerHTML =
-nis(grand) + (units ? ' <small>כולל מע\u05f4מ</small>' : '');
+nis(grand) + (units ? ' <small>כולל מע\u05f4מ'+(extras ? ' · לפני '+extras : '')+'</small>' : '');
 const fill = document.getElementById("mFill");
 fill.style.width = Math.min(100, units / CONFIG.MIN_UNITS * 100) + "%";
 fill.classList.toggle("ok", ok);
@@ -366,10 +377,11 @@ rows += s === "gush"   ? '<tr><td>משלוח — גוש דן</td><td>'+nis(CONFI
 : s === "pickup" ? '<tr><td>איסוף עצמי — צור יצחק</td><td>0 ₪</td></tr>'
 :                  '<tr><td>משלוח מחוץ לגוש דן</td><td style="font-weight:600;color:var(--warn)">לפי הצעה</td></tr>';
 if(document.getElementById("fStation").checked) rows += '<tr><td>עמדה ממותגת באירוע</td><td style="font-weight:600;color:var(--rose)">לפי הצעה</td></tr>';
-rows += '<tr class="tot"><td>'+(s==="other" ? 'סה"כ לפני משלוח' : 'סה"כ לתשלום')+'</td><td>'+nis(grand)+'</td></tr>';
+if(document.getElementById("fNoSauces").checked) rows += '<tr><td>רטבים</td><td>ללא רטבים</td></tr>';
+rows += '<tr class="tot"><td>'+(extras ? 'סה"כ לפני '+extras : 'סה"כ להזמנה')+'</td><td>'+nis(grand)+'</td></tr>';
 rows += '<tr class="vatin"><td>מזה מע\u05f4מ '+Math.round(CONFIG.VAT*100)+'%</td><td>'+nis(vat)+'</td></tr>';
 box.innerHTML = '<table>'+rows+'</table>'
-+ '<p class="cap">כל המחירים כוללים מע\u05f4מ.</p>';
++ '<p class="cap">כל המחירים כוללים מע\u05f4מ.'+(extras ? ' המחיר אינו כולל '+extras+' — העלות תימסר לאישורכם בנפרד.' : '')+'</p>';
 }
 /* ---- submit ---- */
 const SHIP_LABEL = {gush:"משלוח בגוש דן (50 ₪)", other:"משלוח מחוץ לגוש דן — לפי הצעה", pickup:"איסוף עצמי — צור יצחק"};
@@ -388,7 +400,7 @@ event:{date:g("fDate").value, time:g("fTime").value,
 guests:g("fGuests").value, type:g("fType").value, place:g("fPlace").value.trim()},
 shipping:{code:s, label:SHIP_LABEL[s], cost:s==="gush"?CONFIG.DELIVERY_GUSH:0},
 station:g("fStation").checked,
-notes:g("fNotes").value.trim(),
+notes:[g("fNoSauces").checked ? "ללא רטבים — לא לצרף רוטב סויה או רוטב טריאקי." : "", g("fNotes").value.trim()].filter(Boolean).join("\n"),
 lines, units, subtotal,
 vatRate: CONFIG.VAT,
 vat: Math.round((subtotal + (s==="gush"?CONFIG.DELIVERY_GUSH:0)) - (subtotal + (s==="gush"?CONFIG.DELIVERY_GUSH:0)) / (1 + CONFIG.VAT)),
@@ -449,7 +461,7 @@ L.push("", "*ההזמנה:*");
 o.lines.forEach(l => L.push("• " + l.name + " × " + l.qty + " = " + l.sum + " ₪"));
 L.push("", "סה\"כ " + o.units + " יחידות — " + o.subtotal + " ₪");
 if(o.shipping.cost) L.push("משלוח — " + o.shipping.cost + " ₪");
-L.push("*סה\"כ לתשלום: " + o.total + " ₪*" + (o.shipping.code === "other" ? " (לפני משלוח)" : ""));
+L.push("*סה\"כ להזמנה: " + o.total + " ₪*" + (excludedExtras(o.shipping.code, o.station) ? " (לפני " + excludedExtras(o.shipping.code, o.station) + ")" : ""));
 L.push("מזה מע\u05f4מ " + Math.round(CONFIG.VAT*100) + "% — " + o.vat + " ₪");
 if(o.notes) L.push("", "*הערות:* " + o.notes);
 return L.join("\n");
@@ -487,7 +499,9 @@ document.getElementById("app").innerHTML =
 '<div class="done"><div class="tick">✓</div>'
 + '<h2>הבקשה נשלחה</h2>'
 + '<p>תודה ' + escapeHTML(o.contact.name) + '. קיבלנו בקשה ל-' + o.units + ' יחידות לתאריך ' + o.event.date + '.</p>'
-+ '<p>נחזור אליכם לאישור הפרטים והסכום הסופי — בדרך כלל תוך שעות ספורות.</p>'
++ '<p>סה״כ להזמנה: <strong>' + nis(o.total) + '</strong> כולל מע״מ.' + (excludedExtras(o.shipping.code, o.station) ? ' הסכום אינו כולל ' + excludedExtras(o.shipping.code, o.station) + ' — העלות תימסר לאישורכם בנפרד.' : '') + '</p>'
++ (o.notes ? '<p>הערות להזמנה: ' + escapeHTML(o.notes).replace(/\n/g, '<br>') + '</p>' : '')
++ '<p>הבקשה ממתינה לאישור שלנו. נחזור אליכם לאישור הפרטים ולתיאום התשלום.</p>'
 + '<p style="margin-top:18px">צריכים אותנו קודם? <a href="tel:0525958465" style="color:var(--rose);font-weight:600">052-5958465</a></p></div>';
 window.scrollTo({top:0, behavior:"smooth"});
 }
