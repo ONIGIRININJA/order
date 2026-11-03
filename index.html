@@ -160,6 +160,10 @@ body.q-pending .wrap{padding-bottom:40px}
 .quick .sub{margin:0 0 14px;color:var(--muted);font-size:.92rem}
 .quick .rec{margin:2px 0 14px;font-size:.88rem;color:var(--good);font-weight:600;min-height:1.3em}
 .quick .cta{width:100%}
+/* [AI:Claude 2026-11-04] כפתור וואטסאפ — רוב הפניות מגיעות בוואטסאפ */
+.wa{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;box-sizing:border-box;margin-top:10px;padding:12px 14px;border:1.5px solid #1F8F4E;border-radius:12px;background:#fff;color:#1F7A44;font-weight:700;font-size:1rem;text-decoration:none}
+.wa svg{width:20px;height:20px;flex-shrink:0}
+
 .quick .alt{margin:14px 0 0;text-align:center;font-size:.85rem;color:var(--muted)}
 .quick .alt a{color:var(--rose);font-weight:600}
 h1,h2,h3{font-family:'Rubik',Arial,sans-serif;font-weight:700!important}.hd h1,.sec>h2{color:var(--ink)}.hd h1:before{content:'';display:block;width:40px;height:40px;margin:18px auto;border-radius:50%;background:var(--rose)}.stepper button,.stepper input{height:44px}.stepper button{width:44px}.cta{background:var(--rose)}.cta:hover{background:#992930}a:focus-visible,button:focus-visible{outline:3px solid var(--rose);outline-offset:3px}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}</style>
@@ -197,7 +201,8 @@ h1,h2,h3{font-family:'Rubik',Arial,sans-serif;font-weight:700!important}.hd h1,.
 <input id="qGuests" type="number" min="1" step="1" inputmode="numeric"></div>
 <p class="rec" id="qRec" aria-live="polite"></p>
 <button type="button" class="cta" id="qNext">המשך לבחירת מילויים</button>
-<p class="alt">שאלה לפני שממשיכים? <a href="tel:0525958465">052-5958465</a></p>
+<a class="wa" href="https://wa.me/972525958465?text=%D7%A9%D7%9C%D7%95%D7%9D%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A7%D7%91%D7%9C%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A2%D7%9C%20%D7%94%D7%96%D7%9E%D7%A0%D7%AA%20%D7%90%D7%95%D7%A0%D7%99%D7%92%D7%99%D7%A8%D7%99%20%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2" target="_blank" rel="noopener" data-wa="1"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.2-.5-.3z"/></svg>מעדיפים וואטסאפ? כתבו לנו</a>
+<p class="alt">או בטלפון: <a href="tel:0525958465">052-5958465</a></p>
 </section>
 <section class="sec">
 <h2><span class="step">1</span>בחירת מילויים</h2>
@@ -226,8 +231,8 @@ h1,h2,h3{font-family:'Rubik',Arial,sans-serif;font-weight:700!important}.hd h1,.
 <input id="fPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="050-0000000" required></div>
 </div>
 <div class="row">
-<div class="f"><label for="fEmail">אימייל <span class="req">*</span></label>
-<input id="fEmail" type="email" autocomplete="email" required></div>
+<div class="f"><label for="fEmail">אימייל <span style="font-weight:400;color:var(--muted)">(לא חובה)</span></label>
+<input id="fEmail" type="email" autocomplete="email"></div>
 <div class="f"><label for="fCompany">חברה / ארגון</label>
 <input id="fCompany" type="text" autocomplete="organization"></div>
 </div>
@@ -235,8 +240,9 @@ h1,h2,h3{font-family:'Rubik',Arial,sans-serif;font-weight:700!important}.hd h1,.
 <div class="f"><label for="fDate">תאריך האירוע <span class="req">*</span></label>
 <input id="fDate" type="date" required>
 <div class="hint">נדרשת התראה של יומיים מראש לפחות.</div></div>
-<div class="f"><label for="fTime">שעת האספקה <span class="req">*</span></label>
-<input id="fTime" type="time" required></div>
+<div class="f"><label for="fTime">שעת אספקה משוערת <span style="font-weight:400;color:var(--muted)">(לא חובה)</span></label>
+<input id="fTime" type="time">
+<div class="hint">אפשר להשאיר ריק — נתאם איתכם את השעה בטלפון.</div></div>
 </div>
 <div class="row">
 <div class="f"><label for="fGuests">מספר משתתפים באירוע <span class="req">*</span></label>
@@ -273,6 +279,7 @@ h1,h2,h3{font-family:'Rubik',Arial,sans-serif;font-weight:700!important}.hd h1,.
 <div class="sum" id="sum"><p class="empty">עדיין לא נבחרו מילויים.</p></div>
 <p class="note">המחיר מוצג בסיכום. שליחת הבקשה אינה מחייבת בתשלום ואינה אישור הזמנה. לאחר בדיקת הפרטים נאשר את ההזמנה ונתאם את התשלום. עמדה ממותגת ומשלוח מחוץ לגוש דן, אם נבחרו, מתומחרים בנפרד לפני האישור.</p>
 <p class="contact">הפרטים נמסרים לצורך טיפול בבקשת ההזמנה. לעיון: <a href="https://www.onigirininja.com/מדיניות-פרטיות" target="_blank" rel="noopener">מדיניות פרטיות</a> · <a href="https://www.onigirininja.com/תקנון-האתר" target="_blank" rel="noopener">תקנון האתר</a>.</p>
+<a class="wa" href="https://wa.me/972525958465?text=%D7%A9%D7%9C%D7%95%D7%9D%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A7%D7%91%D7%9C%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%A2%D7%9C%20%D7%94%D7%96%D7%9E%D7%A0%D7%AA%20%D7%90%D7%95%D7%A0%D7%99%D7%92%D7%99%D7%A8%D7%99%20%D7%9C%D7%90%D7%99%D7%A8%D7%95%D7%A2" target="_blank" rel="noopener" data-wa="1"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.2-.5-.3z"/></svg>מעדיפים וואטסאפ? כתבו לנו</a>
 <p class="contact">שאלה לפני שממלאים? <a href="tel:0525958465">052-5958465</a> · <a href="mailto:Bigbeilin@gmail.com">Bigbeilin@gmail.com</a><br><a href="https://www.onigirininja.com/">onigirininja.com</a></p>
 </section>
 </div>
@@ -440,8 +447,9 @@ return day.toISOString().slice(0,10);
 }
 document.getElementById('fDate').min = earliestEventDate();
 function validate(){
-const need = [["fName","שם איש קשר"],["fPhone","טלפון"],["fEmail","אימייל"],
-["fDate","תאריך האירוע"],["fTime","שעת האספקה"],
+// [AI:Claude 2026-11-04] אימייל ושעת אספקה — לא חובה (יניב אישר)
+const need = [["fName","שם איש קשר"],["fPhone","טלפון"],
+["fDate","תאריך האירוע"],
 ["fGuests","מספר משתתפים"],["fPlace","מקום האירוע"]];
 const errors = [];
 let firstInvalid = null;
@@ -458,6 +466,7 @@ if(!error && id === 'fGuests' && (!Number.isInteger(Number(value)) || Number(val
 el.setAttribute('aria-invalid', error ? 'true' : 'false');
 if(error){ errors.push(error); if(!firstInvalid) firstInvalid = el; }
 });
+{ const em = document.getElementById('fEmail'); const ev = em.value.trim(); const bad = ev !== '' && !em.validity.valid; em.setAttribute('aria-invalid', bad ? 'true' : 'false'); if(bad){ errors.push('כתובת האימייל לא תקינה — אפשר גם להשאיר ריק'); if(!firstInvalid) firstInvalid = em; } }
 if(Object.values(qty).reduce((sum,q)=>sum+q,0) < CONFIG.MIN_UNITS) errors.push('מינימום ההזמנה הוא ' + CONFIG.MIN_UNITS + ' יחידות');
 const box = document.getElementById('formErr');
 if(errors.length){
@@ -531,6 +540,7 @@ window.scrollTo({top:0, behavior:"smooth"});
 
 /* ---- מדידת משפך (ביקור / התחלת מילוי / הגעה למינימום / שליחה) ---- */
 var __onnS = {start:false, cart:false};
+document.addEventListener("click", function(e){ if(window.__onnTrack && e.target.closest && e.target.closest("[data-wa]")) __onnTrack("whatsapp"); }, true);
 document.addEventListener("input", function(){ if(!__onnS.start && window.__onnTrack){ __onnS.start = true; __onnTrack("start"); } }, true);
 document.addEventListener("click", function(e){ if(!__onnS.start && window.__onnTrack && e.target.closest && e.target.closest("[data-i]")){ __onnS.start = true; __onnTrack("start"); } }, true);
 var __onnUpdate = update;
