@@ -148,6 +148,20 @@ display:grid;place-items:center;font-size:2rem;margin:0 auto 16px}
 .opt.addon b{color:var(--rose)}
 .f .opt.addon input{accent-color:var(--rose);width:17px;height:17px}
 .opt span.addon-tag{display:inline-block;font-size:.72rem;font-weight:600;color:#FFFDF8;background:var(--rose);border-radius:999px;padding:2px 9px;margin-inline-start:8px;position:relative;top:-1px}
+/* ---------- mobile quick start: date + guests first ---------- */
+.quick{display:none}
+@media (max-width:720px){
+body.q-pending .quick{display:block}
+body.q-pending .facts,body.q-pending .sec,body.q-pending .bar{display:none}
+body.q-pending .wrap{padding-bottom:40px}
+}
+.quick{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);margin:14px 0 26px}
+.quick h2{font-size:1.18rem;margin:0 0 4px;color:var(--ink)}
+.quick .sub{margin:0 0 14px;color:var(--muted);font-size:.92rem}
+.quick .rec{margin:2px 0 14px;font-size:.88rem;color:var(--good);font-weight:600;min-height:1.3em}
+.quick .cta{width:100%}
+.quick .alt{margin:14px 0 0;text-align:center;font-size:.85rem;color:var(--muted)}
+.quick .alt a{color:var(--rose);font-weight:600}
 h1,h2,h3{font-family:'Rubik',Arial,sans-serif;font-weight:700!important}.hd h1,.sec>h2{color:var(--ink)}.hd h1:before{content:'';display:block;width:40px;height:40px;margin:18px auto;border-radius:50%;background:var(--rose)}.stepper button,.stepper input{height:44px}.stepper button{width:44px}.cta{background:var(--rose)}.cta:hover{background:#992930}a:focus-visible,button:focus-visible{outline:3px solid var(--rose);outline-offset:3px}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}</style>
 </head>
 <body>
@@ -171,20 +185,32 @@ h1,h2,h3{font-family:'Rubik',Arial,sans-serif;font-weight:700!important}.hd h1,.
 <span class="fact">האוניגירי ללא גלוטן · ראו מידע על הרטבים</span>
 <span class="fact">מיוצר ביום האירוע</span>
 <span class="fact">אפשר גם עמדה ממותגת באירוע</span>
-<span class="fact">כל המחירים כוללים מע״מ</span>
 </div>
+<section class="quick" id="quick" aria-labelledby="quickTitle">
+<h2 id="quickTitle">נתחיל בשני פרטים</h2>
+<p class="sub">מתי האירוע וכמה משתתפים. את השאר ממלאים בשלב הבא.</p>
+<div id="quickErr" hidden class="err"></div>
+<div class="f"><label for="qDate">תאריך האירוע <span class="req">*</span></label>
+<input id="qDate" type="date">
+<div class="hint">נדרשת התראה של יומיים מראש לפחות.</div></div>
+<div class="f"><label for="qGuests">מספר משתתפים <span class="req">*</span></label>
+<input id="qGuests" type="number" min="1" step="1" inputmode="numeric"></div>
+<p class="rec" id="qRec" aria-live="polite"></p>
+<button type="button" class="cta" id="qNext">המשך לבחירת מילויים</button>
+<p class="alt">שאלה לפני שממשיכים? <a href="tel:0525958465">052-5958465</a></p>
+</section>
 <section class="sec">
 <h2><span class="step">1</span>בחירת מילויים</h2>
 <p class="sub">אפשר לשלב בין מילויים כרצונכם — המינימום הוא 100 יחידות בסך הכול.</p>
 <p class="note" id="sauceInfo">האוניגירי עצמו ללא גלוטן. רוטבי הסויה והטריאקי מגיעים בנפרד ועשויים להכיל גלוטן. אפשר לבחור בהמשך הזמנה ללא רטבים. במקרה של אלרגיה או רגישות, ציינו זאת בהערות וצרו איתנו קשר לפני אישור ההזמנה.</p>
 <div class="grouphead">
 <h3>מילויי דגים <span style="font-weight:400;color:var(--muted)">· 7 אפשרויות</span></h3>
-<span class="price">18 ₪ ליחידה · כולל מע״מ</span>
+<span class="price">18 ₪ ליחידה</span>
 </div>
 <div class="grid" id="gFish"></div>
 <div class="grouphead">
-<h3>מילויים טבעוניים <span style="font-weight:400;color:var(--muted)">· 4 אפשרויות</span></h3>
-<span class="price">16 ₪ ליחידה · כולל מע״מ</span>
+<h3>מילויים טבעוניים <span style="font-weight:400;color:var(--muted)">· 3 אפשרויות</span></h3>
+<span class="price">16 ₪ ליחידה</span>
 </div>
 <div class="grid" id="gVegan"></div>
 </section>
@@ -268,7 +294,7 @@ PRICE_FISH: 18,
 PRICE_VEGAN: 16,
 MIN_UNITS: 100,
 DELIVERY_GUSH: 50,
-VAT: 0.18                        // שיעור המע״מ
+VAT: 0                           // עוסק פטור — ללא מע״מ
 };
 const M = "https://static.wixstatic.com/media/";
 const T = id => M + id + "/v1/fill/w_180,h_180,al_c,q_85,enc_auto/" + id;
@@ -282,8 +308,7 @@ const ITEMS = [
 {id:"tuna_hot",    n:"סלט טונה חריף",          k:"fish",  img:"251958_b2d020d079324a098fac8b703cbd27cb~mv2.jpg"},
 {id:"avocado",     n:"אבוקדו",                 k:"vegan", img:"251958_2bfc8168996c4077b563f59215798707~mv2.jpg"},
 {id:"yam",         n:"בטטה",                   k:"vegan", img:"251958_a0c45320f07a4b889259b03c6777c20a~mv2.jpg"},
-{id:"mushroom",    n:"פטריות אפויות",          k:"vegan", img:"251958_c09182fed21544b7a70b192905d30a70~mv2.jpg"},
-{id:"miso_almond", n:"מיסו ושקדים",            k:"vegan", img:"251958_5fc3b24bceec46b7bf4a38ac5a80fb58~mv2.jpg", tag:"מכיל שקדים"}
+{id:"mushroom",    n:"פטריות אפויות",          k:"vegan", img:"251958_c09182fed21544b7a70b192905d30a70~mv2.jpg"}
 ];
 const price = it => it.k === "fish" ? CONFIG.PRICE_FISH : CONFIG.PRICE_VEGAN;
 const qty = {};
@@ -293,7 +318,7 @@ function cardHTML(it){
 return '<div class="card" data-c="'+it.id+'">'
 + '<img class="th" loading="lazy" src="'+T(it.img)+'" alt="'+it.n+'">'
 + '<div class="nm"><b>'+it.n+(it.tag?'<span class="tag">'+it.tag+'</span>':'')+'</b>'
-+ '<span>'+price(it)+' ₪ · כולל מע״מ</span>'
++ '<span>'+price(it)+' ₪</span>'
 + '<div class="stepper" dir="ltr">'
 +   '<button type="button" data-d="'+it.id+'" aria-label="הפחתת 5 יחידות '+it.n+'">−</button>'
 +   '<input type="number" min="0" step="1" inputmode="numeric" value="0" data-q="'+it.id+'" aria-label="כמות '+it.n+'">'
@@ -362,7 +387,7 @@ const grand = subtotal + delivery;
 const extras = excludedExtras(s, document.getElementById("fStation").checked);
 const vat   = Math.round(grand - grand / (1 + CONFIG.VAT));
 document.getElementById("mTotal").innerHTML =
-nis(grand) + (units ? ' <small>כולל מע\u05f4מ'+(extras ? ' · לפני '+extras : '')+'</small>' : '');
+nis(grand) + (units && extras ? ' <small>לפני '+extras+'</small>' : '');
 const fill = document.getElementById("mFill");
 fill.style.width = Math.min(100, units / CONFIG.MIN_UNITS * 100) + "%";
 fill.classList.toggle("ok", ok);
@@ -379,9 +404,8 @@ rows += s === "gush"   ? '<tr><td>משלוח — גוש דן</td><td>'+nis(CONFI
 if(document.getElementById("fStation").checked) rows += '<tr><td>עמדה ממותגת באירוע</td><td style="font-weight:600;color:var(--rose)">לפי הצעה</td></tr>';
 if(document.getElementById("fNoSauces").checked) rows += '<tr><td>רטבים</td><td>ללא רטבים</td></tr>';
 rows += '<tr class="tot"><td>'+(extras ? 'סה"כ לפני '+extras : 'סה"כ להזמנה')+'</td><td>'+nis(grand)+'</td></tr>';
-rows += '<tr class="vatin"><td>מזה מע\u05f4מ '+Math.round(CONFIG.VAT*100)+'%</td><td>'+nis(vat)+'</td></tr>';
 box.innerHTML = '<table>'+rows+'</table>'
-+ '<p class="cap">כל המחירים כוללים מע\u05f4מ.'+(extras ? ' המחיר אינו כולל '+extras+' — העלות תימסר לאישורכם בנפרד.' : '')+'</p>';
++ (extras ? '<p class="cap">המחיר אינו כולל '+extras+' — העלות תימסר לאישורכם בנפרד.</p>' : '');
 }
 /* ---- submit ---- */
 const SHIP_LABEL = {gush:"משלוח בגוש דן (50 ₪)", other:"משלוח מחוץ לגוש דן — לפי הצעה", pickup:"איסוף עצמי — צור יצחק"};
@@ -404,7 +428,7 @@ notes:[g("fNoSauces").checked ? "ללא רטבים — לא לצרף רוטב ס
 lines, units, subtotal,
 vatRate: CONFIG.VAT,
 vat: Math.round((subtotal + (s==="gush"?CONFIG.DELIVERY_GUSH:0)) - (subtotal + (s==="gush"?CONFIG.DELIVERY_GUSH:0)) / (1 + CONFIG.VAT)),
-vatIncluded: true,
+vatIncluded: false,
 get total(){ return this.subtotal + this.shipping.cost; }
 };
 }
@@ -462,7 +486,6 @@ o.lines.forEach(l => L.push("• " + l.name + " × " + l.qty + " = " + l.sum + "
 L.push("", "סה\"כ " + o.units + " יחידות — " + o.subtotal + " ₪");
 if(o.shipping.cost) L.push("משלוח — " + o.shipping.cost + " ₪");
 L.push("*סה\"כ להזמנה: " + o.total + " ₪*" + (excludedExtras(o.shipping.code, o.station) ? " (לפני " + excludedExtras(o.shipping.code, o.station) + ")" : ""));
-L.push("מזה מע\u05f4מ " + Math.round(CONFIG.VAT*100) + "% — " + o.vat + " ₪");
 if(o.notes) L.push("", "*הערות:* " + o.notes);
 return L.join("\n");
 }
@@ -499,7 +522,7 @@ document.getElementById("app").innerHTML =
 '<div class="done"><div class="tick">✓</div>'
 + '<h2>הבקשה נשלחה</h2>'
 + '<p>תודה ' + escapeHTML(o.contact.name) + '. קיבלנו בקשה ל-' + o.units + ' יחידות לתאריך ' + o.event.date + '.</p>'
-+ '<p>סה״כ להזמנה: <strong>' + nis(o.total) + '</strong> כולל מע״מ.' + (excludedExtras(o.shipping.code, o.station) ? ' הסכום אינו כולל ' + excludedExtras(o.shipping.code, o.station) + ' — העלות תימסר לאישורכם בנפרד.' : '') + '</p>'
++ '<p>סה״כ להזמנה: <strong>' + nis(o.total) + '</strong>.' + (excludedExtras(o.shipping.code, o.station) ? ' הסכום אינו כולל ' + excludedExtras(o.shipping.code, o.station) + ' — העלות תימסר לאישורכם בנפרד.' : '') + '</p>'
 + (o.notes ? '<p>הערות להזמנה: ' + escapeHTML(o.notes).replace(/\n/g, '<br>') + '</p>' : '')
 + '<p>הבקשה ממתינה לאישור שלנו. נחזור אליכם לאישור הפרטים ולתיאום התשלום.</p>'
 + '<p style="margin-top:18px">צריכים אותנו קודם? <a href="tel:0525958465" style="color:var(--rose);font-weight:600">052-5958465</a></p></div>';
@@ -515,6 +538,43 @@ update = function(){ __onnUpdate(); var b = document.getElementById("send"); if(
 var __onnDone = done;
 done = function(o){ if(window.__onnTrack) __onnTrack("submit"); __onnDone(o); };
 update();
+</script>
+<script>
+/* ---- נייד: שלב ראשון קצר — תאריך ומספר משתתפים בלבד. ממלא את fDate/fGuests הקיימים, כך שתוכן השליחה לא משתנה ---- */
+(function(){
+var mq = window.matchMedia ? window.matchMedia("(max-width:720px)") : null;
+if(!mq || !mq.matches) return;
+var g = function(id){ return document.getElementById(id); };
+var qDate = g("qDate"), qGuests = g("qGuests"), rec = g("qRec"), err = g("quickErr");
+if(!qDate || !qGuests) return;
+document.body.classList.add("q-pending");
+qDate.min = earliestEventDate();
+function recommend(){
+var n = parseInt(qGuests.value, 10);
+if(!n || n < 1){ rec.textContent = ""; return; }
+var lo = Math.max(CONFIG.MIN_UNITS, n * 2), hi = Math.max(CONFIG.MIN_UNITS, n * 3);
+rec.textContent = lo === hi ? "המלצה: " + lo + " יחידות (מינימום ההזמנה)" : "המלצה: " + lo + "–" + hi + " יחידות (2–3 לאדם)";
+}
+qGuests.addEventListener("input", recommend);
+[qDate, qGuests].forEach(function(el){ el.addEventListener("input", function(){ el.setAttribute("aria-invalid", "false"); err.hidden = true; }); });
+g("qNext").addEventListener("click", function(){
+var errors = [], first = null, min = earliestEventDate();
+qDate.min = min;
+var d = qDate.value, n = Number(qGuests.value);
+if(!d){ errors.push("יש לבחור תאריך האירוע"); first = qDate; }
+else if(d < min){ errors.push("יש לבחור תאריך בעוד יומיים לפחות"); first = qDate; }
+if(!qGuests.value || !Number.isInteger(n) || n < 1){ errors.push("מספר המשתתפים חייב להיות מספר שלם וחיובי"); first = first || qGuests; }
+qDate.setAttribute("aria-invalid", errors.length && first === qDate ? "true" : "false");
+qGuests.setAttribute("aria-invalid", !qGuests.value || !Number.isInteger(n) || n < 1 ? "true" : "false");
+if(errors.length){ err.textContent = errors.join(". "); err.hidden = false; first.focus(); return; }
+err.hidden = true;
+g("fDate").value = d;
+g("fGuests").value = String(n);
+document.body.classList.remove("q-pending");
+var s = document.querySelector(".sec");
+if(s) s.scrollIntoView({behavior:"smooth", block:"start"});
+});
+})();
 </script>
 <script>
 /* אוניגירי נינג׳ה — מונה ביקורים ומשפך הזמנה. ללא עוגיות, ללא פרטים מזהים: מזהה גלישה אקראי לטאב (sessionStorage), נתיב ומקור בלבד. */
