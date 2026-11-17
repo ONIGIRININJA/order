@@ -271,6 +271,16 @@ h1,h2,h3{font-family:'Rubik',Arial,sans-serif;font-weight:700!important}.hd h1,.
 <span><b>עמדת אוניגירי נינג׳ה ממותגת באירוע<span class="addon-tag">בתוספת תשלום</span></b><span>אנחנו מגיעים עם דוכן ממותג וצוות שמגיש במקום. סמנו כאן ונחזור אליכם עם הצעה מותאמת לאירוע.</span></span></label></div>
 <div class="f"><label class="opt"><input type="checkbox" id="fNoSauces" aria-describedby="sauceInfo">
 <span><b>להזמין ללא רטבים</b><span>ללא רוטב סויה וללא רוטב טריאקי.</span></span></label></div>
+<div class="f"><label for="fHeard">איך שמעתם עלינו? <span style="font-weight:400;color:var(--muted)">(לא חובה)</span></label>
+<select id="fHeard">
+<option value="">— בחרו —</option>
+<option>חיפוש בגוגל</option>
+<option>המלצה מחבר או עמית</option>
+<option>הזמננו בעבר</option>
+<option>פייסבוק</option>
+<option>ראינו באירוע</option>
+<option>אחר</option>
+</select></div>
 <div class="f"><label for="fNotes">הערות</label>
 <textarea id="fNotes" placeholder="אלרגיות, בקשות מיוחדות, פרטי חניה או קומה, שעת פריקה..."></textarea></div>
 </div>
@@ -427,6 +437,8 @@ const subtotal = lines.reduce((a,l)=>a+l.sum,0);
 const s = shipVal();
 return {
 createdAt:new Date().toISOString(),
+/* [AI:Claude 2026-11-17] מאיפה הגיע הלקוח — נשמר ב-raw של ההזמנה */
+origin:(function(){ try{ var qq=new URLSearchParams(location.search); var ks=["utm_source","utm_medium","utm_campaign","gclid","fbclid"]; var u=[]; for(var i=0;i<ks.length;i++){ var v=qq.get(ks[i]); if(v) u.push(ks[i].replace("utm_","")+"="+v); } var rf=""; try{ rf=document.referrer?new URL(document.referrer).hostname:""; }catch(e){} return { sid:(sessionStorage.getItem("onn_sid")||""), ref:rf, utm:u.join("&"), heard:((g("fHeard")||{}).value||"") }; }catch(e){ return {}; } })(),
 contact:{name:g("fName").value.trim(), phone:g("fPhone").value.trim(),
 email:g("fEmail").value.trim(), company:g("fCompany").value.trim()},
 event:{date:g("fDate").value, time:g("fTime").value,
