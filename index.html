@@ -254,8 +254,9 @@ h1,h2,h3{font-family:'Rubik',Arial,sans-serif;font-weight:700!important}.hd h1,.
 <option>יום כיף</option><option>Happy Hour</option><option>אירוע פרטי</option><option>אחר</option>
 </select></div>
 </div>
-<div class="f"><label for="fPlace">מקום האירוע — שם המקום וכתובת מלאה <span class="req">*</span></label>
-<input id="fPlace" type="text" placeholder="לדוגמה: משרדי אלפא, הרצל 12, תל אביב" required></div>
+<div class="f"><label for="fPlace">מקום האירוע <span style="font-weight:400;color:var(--muted)">(לא חובה)</span></label>
+<input id="fPlace" type="text" placeholder="לדוגמה: משרדי אלפא, הרצל 12, תל אביב">
+<div class="hint">אפשר להשאיר ריק — נתאם איתכם את הכתובת המדויקת בשיחה.</div></div>
 <div class="f"><label>אספקה <span class="req">*</span></label>
 <div class="ship" id="ship">
 <label class="opt"><input type="radio" name="ship" value="gush" checked>
@@ -451,7 +452,7 @@ function validate(){
 // [AI:Claude 2026-11-04] אימייל ושעת אספקה — לא חובה (יניב אישר)
 const need = [["fName","שם איש קשר"],["fPhone","טלפון"],
 ["fDate","תאריך האירוע"],
-["fGuests","מספר משתתפים"],["fPlace","מקום האירוע"]];
+["fGuests","מספר משתתפים"]];
 const errors = [];
 let firstInvalid = null;
 const minDate = earliestEventDate();
