@@ -388,6 +388,7 @@ const delivery = (units > 0 && s === "gush") ? CONFIG.DELIVERY_GUSH : 0;
 /* meter */
 const missing = Math.max(0, CONFIG.MIN_UNITS - units);
 const ok = units >= CONFIG.MIN_UNITS;
+window.__onnUnits = units;
 document.getElementById("mText").textContent =
 units + " יחידות" + (ok ? " · עברתם את המינימום" : " · נדרשות עוד " + missing);
 const grand = subtotal + delivery;
@@ -547,6 +548,13 @@ var __onnUpdate = update;
 update = function(){ __onnUpdate(); var b = document.getElementById("send"); if(!__onnS.cart && b && !b.disabled && window.__onnTrack){ __onnS.cart = true; __onnTrack("cart"); } };
 var __onnDone = done;
 done = function(o){ if(window.__onnTrack) __onnTrack("submit"); __onnDone(o); };
+/* [AI:Claude 2026-11-17] מדידה בלבד: מי בנה סל ונשאר מתחת למינימום. אינו משנה דבר בחוויה. */
+(function(){ var sent=false;
+  function blocked(){ if(sent) return; var u=window.__onnUnits||0;
+    if(u>0 && u<CONFIG.MIN_UNITS && window.__onnTrack){ sent=true; window.__onnTrack("blocked","/blocked-"+u); } }
+  window.addEventListener("pagehide", blocked);
+  document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="hidden") blocked(); });
+})();
 update();
 </script>
 <script>
@@ -562,8 +570,9 @@ qDate.min = earliestEventDate();
 function recommend(){
 var n = parseInt(qGuests.value, 10);
 if(!n || n < 1){ rec.textContent = ""; return; }
-var lo = Math.max(CONFIG.MIN_UNITS, n * 2), hi = Math.max(CONFIG.MIN_UNITS, n * 3);
-rec.textContent = lo === hi ? "המלצה: " + lo + " יחידות (מינימום ההזמנה)" : "המלצה: " + lo + "–" + hi + " יחידות (2–3 לאדם)";
+var lo = n * 2, hi = n * 3;
+var base = "המלצה: " + (lo === hi ? lo : lo + "–" + hi) + " יחידות (2–3 לאדם)";
+rec.textContent = hi < CONFIG.MIN_UNITS ? base + " · מינימום ההזמנה " + CONFIG.MIN_UNITS + " יחידות" : base;
 }
 qGuests.addEventListener("input", recommend);
 [qDate, qGuests].forEach(function(el){ el.addEventListener("input", function(){ el.setAttribute("aria-invalid", "false"); err.hidden = true; }); });
@@ -593,9 +602,9 @@ if(s) s.scrollIntoView({behavior:"smooth", block:"start"});
   var K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3bG9qamNpY2Zvd2l3cGlnZGRmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MDM4MjUsImV4cCI6MjA5NjE3OTgyNX0.UhZw0mdNcduMUydBcUf-2vzMFaw6Qe7leX9zFb2nkx8';
   var SITE='order';
   function sid(){ try{ var s=sessionStorage.getItem('onn_sid'); if(!s){ s=''; var a='ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789'; for(var i=0;i<20;i++) s+=a[Math.floor(Math.random()*a.length)]; sessionStorage.setItem('onn_sid',s);} return s; }catch(e){ return ''; } }
-  function send(ev){ var s=sid(); if(!s) return; var ref=''; try{ ref=document.referrer?new URL(document.referrer).hostname:''; }catch(e){}
+  function send(ev,pOverride){ var s=sid(); if(!s) return; var ref=''; try{ ref=document.referrer?new URL(document.referrer).hostname:''; }catch(e){}
     if(ref && location.hostname && ref.indexOf(location.hostname.replace(/^www\./,''))!==-1) ref='';
-    var body=JSON.stringify({_p:{sid:s,site:SITE,event:ev,path:location.pathname.slice(0,200),ref:ref.slice(0,200)}});
+    var body=JSON.stringify({_p:{sid:s,site:SITE,event:ev,path:(pOverride||location.pathname).slice(0,200),ref:ref.slice(0,200)}});
     try{ fetch(SB,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json','apikey':K,'Authorization':'Bearer '+K},body:body}).catch(function(){}); }catch(e){}
   }
   window.__onnTrack=send;
